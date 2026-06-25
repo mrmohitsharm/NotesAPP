@@ -1,3 +1,4 @@
+
 """
 Django settings for config project.
 
@@ -25,9 +26,15 @@ SECRET_KEY = 'django-insecure-^=vy_h*wwddv+3##=ul4wemx@e9w@ib8cxk1p(_xf+^zwo8^jo
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
-
-
+ALLOWED_HOSTS = [
+    "16.171.182.166",
+    "mynotesapp.duckdns.org",
+    "www.mynotesapp.duckdns.org"
+]
+CSRF_TRUSTED_ORIGINS = [
+    "https://mynotesapp.duckdns.org",
+    "https://www.mynotesapp.duckdns.org"
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -117,3 +124,4 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 LOGIN_URL = '/login/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'

@@ -1,8 +1,8 @@
 from pymongo import MongoClient
 
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient("mongodb+srv://mohitpurohit9636:mohitpurohit9636@cluster0.ssyldxq.mongodb.net/?appName=Cluster0")
 
-db = client["notes_db"]
+db = client["notesdb"]
 
 notes_collection = db["notes"]
-users_collection = db["users"]
+
