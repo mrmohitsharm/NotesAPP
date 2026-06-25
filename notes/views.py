@@ -52,11 +52,6 @@ def add_note(request):
         content = request.POST['content']
 
         notes_collection.insert_one({
-            'title': title,
-            'content': content,
-            'username': request.user.username
-        })
-        notes_collection.insert_one({
     'title': title,
     'content': content,
     'username': request.user.username,
@@ -107,18 +102,18 @@ def register(request):
     if request.method == 'POST':
 
         username = request.POST['username']
+        email = request.POST['email']
         password = request.POST['password']
 
         User.objects.create_user(
             username=username,
+            email=email,
             password=password
         )
 
         return redirect('login')
 
     return render(request, 'register.html')
-
-
 def user_login(request):
 
     if request.method == 'POST':

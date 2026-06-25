@@ -1,161 +1,217 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notes App</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-```
+<title>NotesHub</title>
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+body{
+    background:#f5f7fb;
+    font-family: 'Segoe UI', sans-serif;
+}
 
-<style>
-    body{
-        background:#f4f6f9;
+/* Header */
+.hero{
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:white;
+    padding:40px;
+    border-radius:20px;
+    margin-bottom:30px;
+    box-shadow:0 10px 30px rgba(0,0,0,.1);
+}
+
+.hero h1{
+    font-weight:700;
+}
+
+/* Stats Card */
+.stats-card{
+    border:none;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+/* Search */
+.search-box{
+    border-radius:12px;
+    padding:12px;
+}
+
+/* Notes Card */
+.note-card{
+    border:none;
+    border-radius:15px;
+    overflow:hidden;
+    transition:.3s;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.note-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 15px 30px rgba(0,0,0,.15);
+}
+
+.note-title{
+    font-weight:600;
+}
+
+.card-footer{
+    background:white;
+}
+
+.btn{
+    border-radius:10px;
+}
+
+/* Empty State */
+.empty-state{
+    text-align:center;
+    margin-top:60px;
+}
+
+.empty-state h3{
+    color:#6c757d;
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+    .hero{
+        text-align:center;
     }
 
-    .note-card{
-        transition:0.3s;
+    .header-buttons{
+        margin-top:20px;
     }
 
-    .note-card:hover{
-        transform:translateY(-5px);
-        box-shadow:0 10px 20px rgba(0,0,0,0.1);
+    .header-buttons a{
+        margin-bottom:10px;
+        width:100%;
     }
+}
+
+/* Mobile Responsive */
+
+@media (max-width: 768px) {
+
+    .hero {
+        padding: 25px;
+        text-align: center;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .header-buttons {
+        margin-top: 20px;
+    }
+
+    .header-buttons a {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .stats-card h5 {
+        text-align: center;
+        font-size: 1rem;
+    }
+
+    .search-box {
+        margin-bottom: 10px;
+    }
+
+    .note-card {
+        margin-bottom: 15px;
+    }
+}
+
+@media (max-width: 576px) {
+
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .hero h1 {
+        font-size: 1.7rem;
+    }
+
+    .hero p {
+        font-size: 0.9rem;
+    }
+
+    .btn {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .note-title {
+        font-size: 18px;
+    }
+
+    .card-body p {
+        font-size: 14px;
+    }
+}
 </style>
-```
 
 </head>
 <body>
 
-<div class="container mt-5">
+<div class="container py-4">
 
-```
-<!-- Header -->
-<div class="d-flex justify-content-between align-items-center mb-4">
+    <!-- Hero Section -->
+    <div class="hero">
 
-    <div>
-        <h1>📝 My Notes</h1>
+        <div class="row align-items-center">
 
-        {% if user.is_authenticated %}
-            <p class="text-muted">
-                Welcome, {{ user.username }}
-            </p>
-        {% endif %}
-    </div>
+            <div class="col-md-8">
 
-    <div>
-<a href="/profile/" class="btn btn-info me-2">
-    Profile
-</a>
-        {% if user.is_authenticated %}
+                <h1>📝 NotesHub</h1>
 
-            <a href="/logout/" class="btn btn-danger">
-                Logout
-            </a>
+                <p class="mb-0">
+                    Organize your ideas, tasks and important notes in one place.
+                </p>
 
-        {% else %}
+                {% if user.is_authenticated %}
+                <small>
+                    Welcome back, <b>{{ user.username }}</b>
+                </small>
+                {% endif %}
 
-            <a href="/login/" class="btn btn-success">
-                Login
-            </a>
+            </div>
 
-            <a href="/register/" class="btn btn-primary">
-                Register
-            </a>
+            <div class="col-md-4 text-md-end header-buttons">
 
-        {% endif %}
-
-        <a href="/add/" class="btn btn-primary ms-2">
-            + Add Note
-        </a>
-
-    </div>
-
-</div>
-
-<!-- Total Notes -->
-<div class="alert alert-info">
-    Total Notes: {{ total_notes }}
-</div>
-<div class="alert alert-primary">
-    📊 Total Notes: {{ total_notes }}
-</div>
-<!-- Search Box -->
-<form method="GET" class="mb-4">
-
-    <input
-        type="text"
-        name="search"
-        class="form-control"
-        placeholder="🔍 Search Notes..."
-        value="{{ request.GET.search }}">
-
-</form>
-<form method="GET" class="mb-4">
-
-    <select
-        name="category"
-        class="form-select"
-        onchange="this.form.submit()">
-
-        <option value="">All Categories</option>
-
-        <option value="Study">
-            📚 Study
-        </option>
-
-        <option value="Work">
-            💼 Work
-        </option>
-
-        <option value="Personal">
-            🏠 Personal
-        </option>
-
-        <option value="Ideas">
-            💡 Ideas
-        </option>
-
-    </select>
-
-</form>
-
-<div class="row">
-
-    {% for note in notes %}
-
-    <div class="col-md-4 mb-4">
-
-        <div class="card note-card h-100">
-
-           <div class="card-body">
-
-    <h4 class="card-title">
-        {{ note.title }}
-    </h4>
-
-    <p class="card-text">
-        {{ note.content }}
-    </p>
-
-    <small class="text-muted">
-        📅 Created:
-        {{ note.created_at|date:"d M Y H:i" }}
-    </small>
-
-</div>
-
-            <div class="card-footer bg-white">
-
-                <a href="/update/{{ note.id }}"
-                   class="btn btn-warning btn-sm">
-                   Edit
+                <a href="/profile/" class="btn btn-light">
+                    👤 Profile
                 </a>
 
-                <a href="/delete/{{ note.id }}"
-                   class="btn btn-danger btn-sm">
-                   Delete
+                {% if user.is_authenticated %}
+
+                <a href="/logout/" class="btn btn-danger">
+                    Logout
+                </a>
+
+                {% else %}
+
+                <a href="/login/" class="btn btn-success">
+                    Login
+                </a>
+
+                <a href="/register/" class="btn btn-warning">
+                    Register
+                </a>
+
+                {% endif %}
+
+                <a href="/add/" class="btn btn-dark">
+                    ➕ Add Note
                 </a>
 
             </div>
@@ -164,16 +220,143 @@
 
     </div>
 
-    {% empty %}
+    <!-- Stats -->
+    <div class="card stats-card mb-4">
 
-    <div class="text-center">
-        <h4>No Notes Found 😔</h4>
+        <div class="card-body">
+
+            <h5 class="mb-0">
+                📊 Total Notes :
+                <strong>{{ total_notes }}</strong>
+            </h5>
+
+        </div>
+
     </div>
 
-    {% endfor %}
+    <!-- Search + Category -->
 
-</div>
-```
+    <div class="row mb-4">
+
+        <div class="col-md-8">
+
+            <form method="GET">
+
+                <input
+                    type="text"
+                    name="search"
+                    class="form-control search-box"
+                    placeholder="🔍 Search your notes..."
+                    value="{{ request.GET.search }}">
+
+            </form>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <form method="GET">
+
+                <select
+                    name="category"
+                    class="form-select search-box"
+                    onchange="this.form.submit()">
+
+                    <option value="">
+                        All Categories
+                    </option>
+
+                    <option value="Study">
+                        📚 Study
+                    </option>
+
+                    <option value="Work">
+                        💼 Work
+                    </option>
+
+                    <option value="Personal">
+                        🏠 Personal
+                    </option>
+
+                    <option value="Ideas">
+                        💡 Ideas
+                    </option>
+
+                </select>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- Notes -->
+
+    <div class="row">
+
+        {% for note in notes %}
+
+        <div class="col-lg-4 col-md-6 mb-4">
+
+            <div class="card note-card h-100">
+
+                <div class="card-body">
+
+                    <h5 class="note-title">
+                        {{ note.title }}
+                    </h5>
+
+                    <hr>
+
+                    <p class="text-muted">
+                        {{ note.content }}
+                    </p>
+
+                </div>
+
+                <div class="card-footer">
+
+                    <small class="text-muted d-block mb-3">
+                        📅 {{ note.created_at|date:"d M Y H:i" }}
+                    </small>
+
+                    <a href="/update/{{ note.id }}"
+                       class="btn btn-warning btn-sm">
+                        Edit
+                    </a>
+
+                    <a href="/delete/{{ note.id }}"
+                       class="btn btn-danger btn-sm">
+                        Delete
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="empty-state">
+
+            <h2>📝</h2>
+
+            <h3>No Notes Found</h3>
+
+            <p class="text-muted">
+                Create your first note and start organizing your ideas.
+            </p>
+
+            <a href="/add/" class="btn btn-primary">
+                Create Note
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
 
 </div>
 
