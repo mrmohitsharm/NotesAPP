@@ -106,6 +106,13 @@ body{
         Create your account to manage notes securely
     </p>
 
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
     <form method="POST">
 
         {% csrf_token %}
@@ -124,7 +131,20 @@ body{
                 required>
 
         </div>
+<div class="mb-3">
 
+    <label class="form-label">
+        Email
+    </label>
+
+    <input
+        type="email"
+        name="email"
+        class="form-control"
+        placeholder="Enter email"
+        required>
+
+</div>
         <div class="mb-3">
 
             <label class="form-label">

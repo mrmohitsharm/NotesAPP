@@ -6,3 +6,4 @@ db = client["notesdb"]
 
 notes_collection = db["notes"]
 
+users_collection = db["users"]

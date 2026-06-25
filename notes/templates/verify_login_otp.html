@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>NotesApp Login</title>
+<title>Verify Login OTP | NotesApp</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -54,8 +54,11 @@ body{
 }
 
 .form-control{
-    height:50px;
+    height:55px;
     border-radius:10px;
+    text-align:center;
+    font-size:20px;
+    letter-spacing:4px;
 }
 
 .btn-login{
@@ -113,9 +116,13 @@ body{
 
     <div class="card-body">
 
-        <h3 class="text-center mb-4">
-            Login
+        <h3 class="text-center mb-2">
+            Verify Login OTP
         </h3>
+
+        <p class="text-center text-muted mb-4">
+            Enter the 6-digit OTP sent to your email
+        </p>
 
         {% if error %}
         <div class="error-box">
@@ -123,57 +130,28 @@ body{
         </div>
         {% endif %}
 
-        <form method="POST" action="{% url 'login' %}">
+        <form method="POST" action="{% url 'verify_login_otp' %}">
 
             {% csrf_token %}
 
             <input
                 type="text"
-                name="username"
+                name="otp"
+                maxlength="6"
                 class="form-control mb-3"
-                placeholder="Enter Username"
+                placeholder="000000"
                 required>
 
-            <input
-                type="password"
-                name="password"
-                class="form-control mb-3"
-                placeholder="Enter Password">
-
-            <button
-                type="submit"
-                name="action"
-                value="password"
-                class="btn btn-primary w-100 mb-2">
-                Login With Password
-            </button>
-
-            <button
-                type="submit"
-                name="action"
-                value="otp"
-                class="btn btn-success w-100">
-                Login With OTP
+            <button class="btn-login">
+                Verify OTP
             </button>
 
         </form>
 
         <div class="links">
-
-            <a href="/forgot-password/">
-                Forgot Password?
+            <a href="/login/">
+                ← Back to Login
             </a>
-
-        </div>
-
-        <div class="links">
-
-            Don't have an account?
-
-            <a href="/register/">
-                Register Here
-            </a>
-
         </div>
 
     </div>
